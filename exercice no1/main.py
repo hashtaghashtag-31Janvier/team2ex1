@@ -28,7 +28,7 @@ import string
 
 wordListFromDict = []
 charsTirage = []
-solutionWords = ["caca", "rectum"]
+solutionWords = ["dickbutt"]
 
 
 # La shit goes in here
@@ -39,28 +39,30 @@ def main():
     for x in range(0, 9):
         # randint a convertir en char pour donner une lettre (et ajouter 45
         # pour tiret, fuuu)
-        charsTirage.append(chr(random.randint(65, 90)))
+        randLetter = chr(random.randint(65, 90)) 
+        """for i in range(0, len(charsTirage)): #eviter repetitions (non fonctionnel)
+            while charsTirage[i] == randLetter:
+                randLetter = chr(random.randint(65, 90))
+                charsTirage[i] = randLetter"""
+        charsTirage.append(randLetter)
 
     
-    print "Tirage :", charsTirage # a imprimer sans larray, imanoob
-
+    print "Tirage :",charsTirage # a imprimer sans larray, imanoob
+    
 
     # ici, on doit looper et essayer de trouver le plus de mots avec le plus de lettres
     # possible
-    for x in range(9, 0):
+    for x in range(0, 9):
         for word in wordListFromDict:
-            # pas logique plus bas:
+            wordHasAllLetters = True #vrai par defaut
+            
             for char in charsTirage:
-                ### !!!!! ce bout la marche pas je crois
-                ### !!!!! ce bout la marche pas je crois
-                ### !!!!! ce bout la marche pas je crois
                 if char not in word:
+                    wordHasAllLetters = None #faux si pas trouve
                     break
+            if wordHasAllLetters:
                 solutionWords.append(word)
-                ### !!!!! ce bout la marche pas je crois
-                ### !!!!! ce bout la marche pas je crois
-                ### !!!!! ce bout la marche pas je crois
-
+        #charsTirage.pop(0) #Foncionne pas, spaaaaaaaaaaaaaaaaaaaaam
 
     print len(solutionWords), "Solutions possibles en 9 lettres :"
     for solution in solutionWords:
