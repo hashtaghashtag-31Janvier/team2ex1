@@ -1,6 +1,7 @@
 import pdb
 import random
 import string
+import itertools
 
 # exemple:
 # Tirage : S I N U S A M O R
@@ -28,57 +29,56 @@ import string
 
 wordListFromDict = []
 charsTirage = []
-solutionWords = ["dickbutt"]
-
+solutionWords = []
+voyel = ['A','I','E','O','U']
 
 # La shit goes in here
 def main():
     openDickAndFillWordsWithCaps()
-
+    global charsTirage
     # On cre 9 charsTirage random
     for x in range(0, 9):
         # randint a convertir en char pour donner une lettre (et ajouter 45
         # pour tiret, fuuu)
-        randLetter = chr(random.randint(65, 90)) 
-        """for i in range(0, len(charsTirage)): #eviter repetitions (non fonctionnel)
-            while charsTirage[i] == randLetter:
-                randLetter = chr(random.randint(65, 90))
-                charsTirage[i] = randLetter"""
+        print("Consonne ou voyelle? (c/v)")
+        rep = input()
+        con = rep[0] == 'c'
+        
+        randLetter = chr(random.randint(65, 90))
+        while (randLetter in voyel) == con:
+            randLetter = chr(random.randint(65, 90))
+        print("Vous avez recu: " + randLetter)
         charsTirage.append(randLetter)
-
     
-    print "Tirage :",charsTirage # a imprimer sans larray, imanoob
+    print("Tirage: ",' '.join(sorted(charsTirage))) # a imprimer sans larray, imanoob
     
-
     # ici, on doit looper et essayer de trouver le plus de mots avec le plus de lettres
-    # possible
-    for x in range(0, 9):
-        for word in wordListFromDict:
-            wordHasAllLetters = True #vrai par defaut
-            
-            for char in charsTirage:
-                if char not in word:
-                    wordHasAllLetters = None #faux si pas trouve
+##    # possible
+    nombreLettre = 0
+    for i in range(9, 0, -1):
+        if len(solutionWords) != 0:
+            nombreLettre = i + 1
+            break
+        for word in filter(lambda x: len(x) == i,wordListFromDict):
+           # wordHasAllLetters = True #vrai par defaut
+            lettreEnlever = []
+            for char in word.replace("-",""):
+                if char not in charsTirage:
+                   ## wordHasAllLetters = None #faux si pas trouve
                     break
-            if wordHasAllLetters:
+                else:
+                    lettreEnlever.append(char)
+                    charsTirage.remove(char)
+            else:
                 solutionWords.append(word)
-        #charsTirage.pop(0) #Foncionne pas, spaaaaaaaaaaaaaaaaaaaaam
+            charsTirage.extend(lettreEnlever)
+        #charsTirage.pop(0) #Foncionne pas, spaaaaaaaaaaaaaaaaaaaaa
 
-    print len(solutionWords), "Solutions possibles en 9 lettres :"
-    for solution in solutionWords:
-        print solution
-
-    # pdb.set_trace()
-
-
-# a la fin, la solution doit etre affiche en ordre alphabetique
-def reordonnerAlphabetiquement(array):
-    """
-    >>> reordonnerAlphabetiquement(["ABC", "AAA", "CCC"])
-    ["AAA", "ABC", "CCC"]
-    """
-    return array # needs to be sorted dude!
-
+    
+    print(len(solutionWords), "Solutions possibles en " + str(nombreLettre) + " lettres :")
+    for solution in sorted(solutionWords):
+        print(solution)
+        
 
 
 def openDickAndFillWordsWithCaps():
@@ -89,8 +89,6 @@ def openDickAndFillWordsWithCaps():
         wordListFromDict.append(
             str(word).replace("\n", "").replace("\r", "").upper()
             )
-
-
 
 
 
